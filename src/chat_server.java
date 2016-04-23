@@ -42,6 +42,20 @@ public class chat_server extends JFrame {
 				}
 			}
 		});
+		 
+		
+		//Start client
+		Thread t2 = new Thread(new Runnable(){
+			public void run()
+			{
+				chat_client cc = new chat_client();
+				cc.startchat();
+
+			}
+			
+		});
+		t2.start();
+		
 		
 		String msgin = "";
 		try{
@@ -65,6 +79,7 @@ public class chat_server extends JFrame {
 	 * Create the frame.
 	 */
 	public chat_server() {
+		setTitle("Chat Server");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -100,6 +115,7 @@ public class chat_server extends JFrame {
 		});
 		send_btn.setBounds(360, 196, 64, 55);
 		contentPane.add(send_btn);
+		
 	}
 
 }

@@ -25,18 +25,31 @@ NaiveBayes nb=new NaiveBayes();
 //NaiveBayesMultinomial m=new NaiveBayesMultinomial();
 //MultilayerPerceptron mp=new MultilayerPerceptron();
 nb.buildClassifier(ins);
-Evaluation eval=new Evaluation(ins);
-eval.crossValidateModel(nb, ins, 10, new Random(1));
+//Evaluation eval=new Evaluation(ins);
+//eval.crossValidateModel(nb, ins, 10, new Random(1));
+
 /*
 String s1=mp.hiddenLayersTipText();
 String s2=mp.getHiddenLayers();
 double d3=mp.getLearningRate();
 System.out.println("hidden layers= "+s1+"|||"+"# of hidden layers= "+s2+"|||"+"learning rate= "+d3);
 */
-System.out.println(eval.toSummaryString("\n Results \n ================== \n",true));
-System.out.println(eval.fMeasure(1)+" "+ eval.precision(1)+" "+eval.recall(1));
+//System.out.println(eval.toSummaryString("\n Results \n ================== \n",true));
+//System.out.println(eval.fMeasure(1)+" "+ eval.precision(1)+" "+eval.recall(1));
 
-chat_server cs = new chat_server();
-cs.startchat();
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Create 2 new threads t1 and t2 and invoke chat server and chat client on those threads
+Thread t1 = new Thread(new Runnable(){
+	public void run()
+	{
+		chat_server cs = new chat_server();
+		cs.startchat();
+
+	}
+	
+});
+t1.start();
+
+System.out.println("Done");
 }
 }
