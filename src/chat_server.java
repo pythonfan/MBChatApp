@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,10 +18,11 @@ import java.awt.event.ActionEvent;
 
 public class chat_server extends JFrame {
 
+	ArrayList<String> serverTexts = new ArrayList<String>();
 	private static JPanel contentPane;
 	private static JTextArea msg_area;
 	private static JTextArea msg_text;
-
+	boolean textLimitFlag=false;
 	
 	static ServerSocket ss;
 	static Socket s;
@@ -44,17 +46,6 @@ public class chat_server extends JFrame {
 		});
 		 
 		
-		//Start client
-		Thread t2 = new Thread(new Runnable(){
-			public void run()
-			{
-				chat_client cc = new chat_client();
-				cc.startchat();
-
-			}
-			
-		});
-		t2.start();
 		
 		
 		String msgin = "";
@@ -110,6 +101,14 @@ public class chat_server extends JFrame {
 					e.printStackTrace();
 				}
 				msg_text.setText("");
+				if(serverTexts.size()<5)
+					{
+						serverTexts.add(msgout);
+					}
+				else
+				{
+					setFlag(true);
+				}
 				
 			}
 		});
@@ -117,5 +116,13 @@ public class chat_server extends JFrame {
 		contentPane.add(send_btn);
 		
 	}
-
+	
+	public synchronized void setFlag(boolean flag)
+	{
+		textLimitFlag = flag;
+	}
+	public synchronized boolean getFlag()
+	{
+		return textLimitFlag;
+	}
 }
