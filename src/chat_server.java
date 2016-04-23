@@ -8,6 +8,7 @@ import java.net.Socket;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -17,8 +18,8 @@ import java.awt.event.ActionEvent;
 public class chat_server extends JFrame {
 
 	private static JPanel contentPane;
-	private static JTextField msg_area;
-	private static JTextField msg_text;
+	private static JTextArea msg_area;
+	private static JTextArea msg_text;
 
 	
 	static ServerSocket ss;
@@ -30,7 +31,7 @@ public class chat_server extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void startchat() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -71,12 +72,12 @@ public class chat_server extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		msg_area = new JTextField();
+		msg_area = new JTextArea();
 		msg_area.setBounds(10, 11, 414, 174);
 		contentPane.add(msg_area);
 		msg_area.setColumns(10);
 		
-		msg_text = new JTextField();
+		msg_text = new JTextArea();
 		msg_text.setBounds(10, 198, 341, 53);
 		contentPane.add(msg_text);
 		msg_text.setColumns(10);
@@ -93,6 +94,7 @@ public class chat_server extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				msg_text.setText("");
 				
 			}
 		});

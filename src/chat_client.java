@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -12,8 +13,8 @@ import java.awt.event.ActionEvent;
 
 
 public class chat_client extends JFrame {
-	private static JTextField msg_area;
-	private static JTextField msg_text;
+	private static JTextArea msg_area;
+	private static JTextArea msg_text;
 
 	static Socket s;
 	static DataInputStream din;
@@ -58,12 +59,12 @@ public class chat_client extends JFrame {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 		
-		msg_area = new JTextField();
+		msg_area = new JTextArea();
 		msg_area.setBounds(10, 11, 414, 180);
 		getContentPane().add(msg_area);
 		msg_area.setColumns(10);
 		
-		msg_text = new JTextField();
+		msg_text = new JTextArea();
 		msg_text.setBounds(10, 201, 340, 50);
 		getContentPane().add(msg_text);
 		msg_text.setColumns(10);
@@ -79,6 +80,8 @@ public class chat_client extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				msg_text.setText("");
+
 			}
 		});
 		send_btn.setBounds(359, 202, 65, 49);
