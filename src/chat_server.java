@@ -89,6 +89,8 @@ public class chat_server extends JFrame {
 		msg_text.setColumns(10);
 		
 		JButton send_btn = new JButton("Send");
+		
+		Predictor pd = new Predictor();
 		send_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -101,13 +103,14 @@ public class chat_server extends JFrame {
 					e.printStackTrace();
 				}
 				msg_text.setText("");
-				if(serverTexts.size()<5)
+				if(serverTexts.size()<1)
 					{
 						serverTexts.add(msgout);
 					}
 				else
 				{
-					setFlag(true);
+					//setFlag(true);
+					pd.predict();
 				}
 				
 			}

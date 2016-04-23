@@ -36,13 +36,7 @@ oos.writeObject(m);
 oos.flush();
 oos.close();
 
-//Deserialize
-ObjectInputStream ois = new ObjectInputStream(
-        new FileInputStream("C:\\Users\\Shakti\\Documents\\MLProject\\probabilities.model"));
-Classifier cls = (Classifier) ois.readObject();
-ois.close();
-Evaluation eval=new Evaluation(ins);
-eval.crossValidateModel(cls, ins, 10, new Random(1));
+
 /*
 String s1=mp.hiddenLayersTipText();
 String s2=mp.getHiddenLayers();
