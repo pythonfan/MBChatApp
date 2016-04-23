@@ -49,8 +49,8 @@ String s2=mp.getHiddenLayers();
 double d3=mp.getLearningRate();
 System.out.println("hidden layers= "+s1+"|||"+"# of hidden layers= "+s2+"|||"+"learning rate= "+d3);
 */
-System.out.println(eval.toSummaryString("\n Results \n ================== \n",true));
-System.out.println(eval.fMeasure(1)+" "+ eval.precision(1)+" "+eval.recall(1));
+//System.out.println(eval.toSummaryString("\n Results \n ================== \n",true));
+//System.out.println(eval.fMeasure(1)+" "+ eval.precision(1)+" "+eval.recall(1));
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Create 2 new threads t1 and t2 and invoke chat server and chat client on those threads
