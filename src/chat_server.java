@@ -15,10 +15,14 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.SystemColor;
 
 public class chat_server extends JFrame {
 
-	ArrayList<String> serverTexts = new ArrayList<String>();
+	StringBuffer serverTexts = new StringBuffer();
+	int textCount=0;
+	int moodPrediction = 1;
 	private static JPanel contentPane;
 	private static JTextArea msg_area;
 	private static JTextArea msg_text;
@@ -29,11 +33,13 @@ public class chat_server extends JFrame {
 	static DataInputStream din;
 	static DataOutputStream dout;
 	
+	Predictor pd;
+	
 	
 	/**
 	 * Launch the application.
 	 */
-	public static void startchat() {
+	public  void startchat() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -58,7 +64,31 @@ public class chat_server extends JFrame {
 			{
 				msgin = din.readUTF();
 				msg_area.setText(msg_area.getText().trim()+"\n"+msgin);
+				if(textCount<3)
+				{
+					serverTexts.append(msgin);
+					textCount++;
+				}
+				else
+				{
+					//setFlag(true);
+					moodPrediction = pd.predict(serverTexts.toString());
+					System.out.println("Predicted class in main" + moodPrediction);
+					if(moodPrediction == 0)
+						contentPane.setBackground(Color.RED);
+					else if(moodPrediction == 1)
+						contentPane.setBackground(Color.GREEN);
+					else if(moodPrediction == 3)
+						contentPane.setBackground(Color.LIGHT_GRAY);
+					serverTexts.delete(0, serverTexts.length());
+					textCount=0;
+
+					
+				}
+				
 			}
+			
+			//Add message content to string buffer 
 		}
 		catch(Exception e)
 		{
@@ -74,6 +104,7 @@ public class chat_server extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.menu);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -90,7 +121,7 @@ public class chat_server extends JFrame {
 		
 		JButton send_btn = new JButton("Send");
 		
-		Predictor pd = new Predictor();
+		pd = new Predictor();
 		send_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -103,14 +134,26 @@ public class chat_server extends JFrame {
 					e.printStackTrace();
 				}
 				msg_text.setText("");
-				if(serverTexts.size()<1)
+				if(textCount<3)
 					{
-						serverTexts.add(msgout);
+						serverTexts.append(msgout);
+						textCount++;
 					}
 				else
 				{
 					//setFlag(true);
-					pd.predict();
+					moodPrediction = pd.predict(serverTexts.toString());
+					System.out.println("Predicted class in main" + moodPrediction);
+					if(moodPrediction == 0)
+						contentPane.setBackground(Color.RED);
+					else if(moodPrediction == 1)
+						contentPane.setBackground(Color.GREEN);
+					else if(moodPrediction == 3)
+						contentPane.setBackground(Color.GRAY);
+					serverTexts.delete(0, serverTexts.length());
+					textCount=0;
+
+					
 				}
 				
 			}

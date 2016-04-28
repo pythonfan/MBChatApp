@@ -19,7 +19,7 @@ public class Predictor {
 	int predictedClass = 0;
 	Predictor()
 	{}
-	int predict()
+	synchronized int predict(String serverTexts)
 	{
 		try {
 			BufferedReader br= null;
@@ -40,7 +40,15 @@ public class Predictor {
 				for(int i=0; i<ar.getStructure().numAttributes()-1; i++ )
 					{
 						attrlist.add(ar.getStructure().attribute(i));
-						inst.setValue(ar.getStructure().attribute(i), 0);
+						//System.out.println(ar.getStructure().attribute(i).name());
+						if(serverTexts.contains(ar.getStructure().attribute(i).name()))
+						{
+							inst.setValue(ar.getStructure().attribute(i), 1);
+						}
+						else
+						{
+							inst.setValue(ar.getStructure().attribute(i), 0);
+						}
 					}
 				inst.setDataset(testinstances);
 		
@@ -51,7 +59,17 @@ public class Predictor {
 				Classifier cls = (Classifier) ois.readObject();
 				ois.close();
 				double prediction = cls.classifyInstance(inst);
+				double[] probabilities = cls.distributionForInstance(inst);
+				
+				System.out.println("Predicted probabilities :"+probabilities[0]+ " "+ probabilities[1]);
+
 				System.out.println("Predicted class :"+prediction);
+				predictedClass= (int) prediction;
+				if(Math.abs(probabilities[0] - probabilities[1])<0.1)
+				{
+					predictedClass = 3;
+				}
+
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -66,7 +84,6 @@ public class Predictor {
 				e.printStackTrace();
 			}
 			
-		
 		
 		return predictedClass;
 	}

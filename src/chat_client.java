@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -5,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -13,6 +15,10 @@ import java.awt.event.ActionEvent;
 
 
 public class chat_client extends JFrame {
+	StringBuffer clientTexts = new StringBuffer();
+	int textCount=0;
+	int cliMoodPrediction = 1;
+	private static JPanel contentPane;
 	private static JTextArea msg_area;
 	private static JTextArea msg_text;
 
@@ -58,6 +64,8 @@ public class chat_client extends JFrame {
 		setTitle("Chat Client");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.LIGHT_GRAY);
 		getContentPane().setLayout(null);
 		
 		msg_area = new JTextArea();
@@ -70,6 +78,8 @@ public class chat_client extends JFrame {
 		getContentPane().add(msg_text);
 		msg_text.setColumns(10);
 		
+		Predictor pd = new Predictor();
+
 		JButton send_btn = new JButton("Send");
 		send_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -82,6 +92,29 @@ public class chat_client extends JFrame {
 					e.printStackTrace();
 				}
 				msg_text.setText("");
+				
+				//change color based on mood
+				if(textCount<3)
+				{
+					clientTexts.append(msgout);
+					textCount++;
+				}
+			else
+			{
+				//setFlag(true);
+				cliMoodPrediction = pd.predict(clientTexts.toString());
+				System.out.println("Predicted class in main" + cliMoodPrediction);
+				if(cliMoodPrediction == 0)
+					contentPane.setBackground(Color.RED);
+				else if(cliMoodPrediction == 1)
+					contentPane.setBackground(Color.GREEN);
+				else if(cliMoodPrediction == 3)
+					contentPane.setBackground(Color.GRAY);
+				clientTexts.delete(0, clientTexts.length());
+				textCount=0;
+
+				
+			}
 
 			}
 		});
