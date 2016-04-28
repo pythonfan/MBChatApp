@@ -64,9 +64,10 @@ public class chat_server extends JFrame {
 			{
 				msgin = din.readUTF();
 				msg_area.setText(msg_area.getText().trim()+"\n"+msgin);
-				if(textCount<3)
+				//System.out.println("in receiver textcount=" +textCount);
+				if(textCount<5)
 				{
-					serverTexts.append(msgin);
+					serverTexts.append(msgin+" ");
 					textCount++;
 				}
 				else
@@ -121,7 +122,7 @@ public class chat_server extends JFrame {
 		
 		JButton send_btn = new JButton("Send");
 		
-		pd = new Predictor();
+		pd = Predictor.getInstance();
 		send_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -134,9 +135,11 @@ public class chat_server extends JFrame {
 					e.printStackTrace();
 				}
 				msg_text.setText("");
-				if(textCount<3)
+				//System.out.println("in sender textcount=" +textCount);
+
+				if(textCount<5)
 					{
-						serverTexts.append(msgout);
+						serverTexts.append(msgout+" ");
 						textCount++;
 					}
 				else
@@ -149,7 +152,7 @@ public class chat_server extends JFrame {
 					else if(moodPrediction == 1)
 						contentPane.setBackground(Color.GREEN);
 					else if(moodPrediction == 3)
-						contentPane.setBackground(Color.GRAY);
+						contentPane.setBackground(SystemColor.menu);
 					serverTexts.delete(0, serverTexts.length());
 					textCount=0;
 
@@ -163,12 +166,5 @@ public class chat_server extends JFrame {
 		
 	}
 	
-	public synchronized void setFlag(boolean flag)
-	{
-		textLimitFlag = flag;
-	}
-	public synchronized boolean getFlag()
-	{
-		return textLimitFlag;
-	}
+	
 }

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Random;
-
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.core.Attribute;
@@ -16,11 +15,26 @@ import weka.core.Instances;
 import weka.core.converters.ArffLoader.ArffReader;
 
 public class Predictor {
-	int predictedClass = 0;
+	int predictedClass;
+	String predictionText ="";
+	public static Predictor instance = null;
 	Predictor()
 	{}
+	 public static Predictor getInstance() {
+	      if(instance == null) {
+	         instance = new Predictor();
+	      }
+	      return instance;
+	   }
 	synchronized int predict(String serverTexts)
 	{
+		if((predictionText.length()+serverTexts.length())<10)
+			predictionText+=serverTexts;
+		else
+			predictionText=serverTexts;
+		predictionText.replaceAll("[^A-Za-z]", "");
+		System.out.println("Making prediction on: "+ predictionText);
+
 		try {
 			BufferedReader br= null;
 
@@ -41,9 +55,9 @@ public class Predictor {
 					{
 						attrlist.add(ar.getStructure().attribute(i));
 						//System.out.println(ar.getStructure().attribute(i).name());
-						if(serverTexts.contains(ar.getStructure().attribute(i).name()))
+						if(ar.getStructure().attribute(i).name().length() > 1 && predictionText.contains(ar.getStructure().attribute(i).name()))
 						{
-							inst.setValue(ar.getStructure().attribute(i), 1);
+							inst.setValue(ar.getStructure().attribute(i), countMatches(ar.getStructure().attribute(i).name(),predictionText));
 						}
 						else
 						{
@@ -65,7 +79,7 @@ public class Predictor {
 
 				System.out.println("Predicted class :"+prediction);
 				predictedClass= (int) prediction;
-				if(Math.abs(probabilities[0] - probabilities[1])<0.1)
+				if(Math.abs(probabilities[0] - probabilities[1])<0.3)
 				{
 					predictedClass = 3;
 				}
@@ -87,4 +101,26 @@ public class Predictor {
 		
 		return predictedClass;
 	}
+	private int countMatches(String name, String predictionText2) {
+		// TODO Auto-generated method stub
+		int lastIndex = 0;
+		int count = 0;
+
+		while(lastIndex != -1){
+
+		    lastIndex = predictionText2.indexOf(name,lastIndex);
+
+		    if(lastIndex != -1){
+		        count ++;
+		        lastIndex += name.length();
+		    }
+		}
+		System.out.println(name+ " " +count);
+		return count;
+	}
+	int getPrediction()
+	{
+		return predictedClass;
+	}
+	
 }

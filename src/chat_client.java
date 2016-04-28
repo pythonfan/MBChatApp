@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.SystemColor;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -65,7 +67,9 @@ public class chat_client extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.LIGHT_GRAY);
+		contentPane.setBackground(SystemColor.menu);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
 		getContentPane().setLayout(null);
 		
 		msg_area = new JTextArea();
@@ -78,7 +82,7 @@ public class chat_client extends JFrame {
 		getContentPane().add(msg_text);
 		msg_text.setColumns(10);
 		
-		Predictor pd = new Predictor();
+		Predictor pd = Predictor.getInstance();
 
 		JButton send_btn = new JButton("Send");
 		send_btn.addActionListener(new ActionListener() {
@@ -94,27 +98,24 @@ public class chat_client extends JFrame {
 				msg_text.setText("");
 				
 				//change color based on mood
-				if(textCount<3)
+				if(textCount>5)
 				{
-					clientTexts.append(msgout);
-					textCount++;
-				}
-			else
-			{
 				//setFlag(true);
-				cliMoodPrediction = pd.predict(clientTexts.toString());
-				System.out.println("Predicted class in main" + cliMoodPrediction);
+				cliMoodPrediction = pd.getPrediction();
+				System.out.println("Predicted class in client" + cliMoodPrediction);
 				if(cliMoodPrediction == 0)
 					contentPane.setBackground(Color.RED);
 				else if(cliMoodPrediction == 1)
 					contentPane.setBackground(Color.GREEN);
 				else if(cliMoodPrediction == 3)
-					contentPane.setBackground(Color.GRAY);
-				clientTexts.delete(0, clientTexts.length());
-				textCount=0;
-
-				
-			}
+					contentPane.setBackground(SystemColor.menu);
+				textCount=0;		
+				}
+				else
+					{
+					textCount++;
+					System.out.println("Incrementing in client. TextCount: "+textCount);
+					}
 
 			}
 		});
