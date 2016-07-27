@@ -19,7 +19,7 @@ Pre-Requisites:
 1.weka.jar
 2.JRE 1.8
 3.jgoodies-forms-1.8.0.jar
--------------------------------------------------------------------------
+
 Steps to Execute in windows:
 
 1. Create a workspace and load the source files in the workspace by importing MBChatAppSource
