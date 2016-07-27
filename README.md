@@ -28,4 +28,4 @@ Steps to Execute in windows:
 4. chat_client and chat_server window opens.
 
 ##Output
-![Positive Mood Detection](/positveMoodDetect?raw=true "Positive mood detection")
+![Positive Mood Detection](/positiveMoodDetect.jpg?raw=true "Positive mood detection")
