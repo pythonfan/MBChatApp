@@ -26,3 +26,6 @@ Steps to Execute in windows:
 2. Give the path where amazon_long_filtered.arff file is stored. Ex:"C:\\Users\\Documents\\MLProject\\amazon_long_filtered.arff". 
 3. Run StartWeka.java by pressing the run button
 4. chat_client and chat_server window opens.
+
+##Output
+![Positive Mood Detection](/positveMoodDetect?raw=true "Positive mood detection")
